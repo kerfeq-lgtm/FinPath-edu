@@ -91,3 +91,10 @@
 .review-mistake-list button{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 11px;border:1px solid #f0e5d6;border-radius:7px;background:#fff;color:#765f42;text-align:left;font-size:10px}
 .review-mistake-list button:hover{background:#fff3df}
 @media(max-width:760px){.assessment-overview{grid-template-columns:1fr}.review-mistakes{grid-template-columns:1fr}.assessment-lesson{align-items:flex-start}}
+
+
+.lesson-sequence{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 22px;border-top:1px solid #edf1f4;background:#fbfcfd}
+.lesson-sequence>span{font-size:10px;color:#7c8e9a;font-weight:700;white-space:nowrap}
+.lesson-sequence .outline-button{padding:8px 10px;font-size:10px}
+.lesson-sequence .outline-button:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:480px){.lesson-sequence{padding:10px 13px;gap:6px}.lesson-sequence .outline-button{font-size:9px;padding:8px 7px}.lesson-sequence>span{font-size:9px}}
