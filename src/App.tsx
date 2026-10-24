@@ -11,7 +11,7 @@ const courses:Course[] = [
 {id:"work",title:"Employment & Taxes",pathway:"Personal finance",description:"Read pay stubs, understand gross and net pay, explore workplace benefits, and learn tax basics.",lessons:4,hours:"2 hours",icon:BriefcaseBusiness,tone:"gold",level:"Beginner"},
 {id:"credit",title:"Credit & Debt",pathway:"Personal finance",description:"Learn how credit works, compare borrowing costs, and understand responsible repayment.",lessons:4,hours:"2 hours",icon:ShieldCheck,tone:"lavender",level:"Beginner"},
 {id:"investing",title:"Investing & Retirement",pathway:"Personal finance",description:"Explore risk, diversification, compound growth, and long-term retirement planning.",lessons:4,hours:"2 hours",icon:TrendingUp,tone:"mint",level:"Beginner"},
-{id:"household",title:"Household & International Finance",pathway:"Adult life",description:"Plan housing and household costs, compare currencies, and estimate relocation budgets.",lessons:8,hours:"4 hours",icon:House,tone:"gold",level:"Practical"},
+{id:"household",title:"Household & International Finance",pathway:"Adult life",description:"Plan housing and household costs, compare currencies, and estimate relocation budgets.",lessons:4,hours:"2 hours",icon:House,tone:"gold",level:"Practical"},
 {id:"data",title:"Financial Data Analysis",pathway:"Data & analysis",description:"Use tables and spreadsheets, check data quality, analyze spending, and present findings.",lessons:4,hours:"2.5 hours",icon:BarChart3,tone:"lavender",level:"Practical"}
 ];
 const lessons:Record<string,Lesson[]> = {
