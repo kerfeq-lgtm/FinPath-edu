@@ -56,7 +56,10 @@ data:[{id:"data-1",title:"Read a financial table",minutes:9,objective:"Check lab
 const nav=[{label:"Dashboard",icon:LayoutDashboard},{label:"My courses",icon:BookOpen},{label:"Assignments",icon:ListChecks},{label:"Gradebook",icon:Award},{label:"Assessments",icon:Target},{label:"Final Exams & Certificates",icon:Award},{label:"Financial Lab",icon:Wallet},{label:"Calculator",icon:Calculator},{label:"My progress",icon:BarChart3},{label:"Study resources",icon:Bookmark},{label:"Calendar",icon:CalendarDays}];
 const key="finpath-academy-v2";
 function localDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
-function loadSaved():Saved{try{const raw=localStorage.getItem(key);if(raw){const parsed=JSON.parse(raw);return {...parsed,completed:Array.isArray(parsed.completed)?parsed.completed:[],scores:parsed.scores||{},answers:parsed.answers||{},assignmentCompleted:Array.isArray(parsed.assignmentCompleted)?parsed.assignmentCompleted:[],assignmentResponses:parsed.assignmentResponses||{},assignmentScores:parsed.assignmentScores||{},finalExamScores:parsed.finalExamScores||{},finalExamAttempts:parsed.finalExamAttempts||{},baselineAssessments:parsed.baselineAssessments||{},lessonNotes:parsed.lessonNotes||{},startedAt:parsed.startedAt||localDate()};}}catch{}return{completed:[],scores:{},answers:{},assignmentCompleted:[],assignmentResponses:{},assignmentScores:{},finalExamScores:{},finalExamAttempts:{},baselineAssessments:{},lessonNotes:{},startedAt:localDate()};}
+function emptySaved():Saved{return{completed:[],scores:{},answers:{},assignmentCompleted:[],assignmentResponses:{},assignmentScores:{},finalExamScores:{},finalExamAttempts:{},baselineAssessments:{},lessonNotes:{},startedAt:localDate()};}
+function normalizeSaved(value:unknown):Saved{const parsed=value&&typeof value==="object"?value as Partial<Saved>:{};return{completed:Array.isArray(parsed.completed)?parsed.completed:[],scores:parsed.scores&&typeof parsed.scores==="object"?parsed.scores:{},answers:parsed.answers&&typeof parsed.answers==="object"?parsed.answers:{},assignmentCompleted:Array.isArray(parsed.assignmentCompleted)?parsed.assignmentCompleted:[],assignmentResponses:parsed.assignmentResponses&&typeof parsed.assignmentResponses==="object"?parsed.assignmentResponses:{},assignmentScores:parsed.assignmentScores&&typeof parsed.assignmentScores==="object"?parsed.assignmentScores:{},finalExamScores:parsed.finalExamScores&&typeof parsed.finalExamScores==="object"?parsed.finalExamScores:{},finalExamAttempts:parsed.finalExamAttempts&&typeof parsed.finalExamAttempts==="object"?parsed.finalExamAttempts:{},baselineAssessments:parsed.baselineAssessments&&typeof parsed.baselineAssessments==="object"?parsed.baselineAssessments:{},lessonNotes:parsed.lessonNotes&&typeof parsed.lessonNotes==="object"?parsed.lessonNotes:{},startedAt:typeof parsed.startedAt==="string"?parsed.startedAt:localDate()};}
+function loadSaved(storageKey=key):Saved{try{const raw=localStorage.getItem(storageKey);if(raw)return normalizeSaved(JSON.parse(raw));}catch{}return emptySaved();}
+function userStorageKey(userId:string){return key+":user:"+userId;}
 type DailyAssignment={day:number;title:string;course:string;courseId:string;lessonIndex:number;time:string;task:string;deliverable:string;skill:string};
 const dailyAssignments:DailyAssignment[]=[
 {day:1,title:"Map your money",course:"Money Fundamentals",courseId:"money",lessonIndex:0,time:"15 min",task:"Create four headings: income, expenses, savings, and cash flow. Add at least two fictional examples under each heading.",deliverable:"A one-page money vocabulary map.",skill:"Money basics"},
@@ -93,9 +96,17 @@ const dailyAssignments:DailyAssignment[]=[
 
 export default function App(){
 const [saved,setSaved]=useState<Saved>(loadSaved);const [active,setActive]=useState("Dashboard");
-const [authUser,setAuthUser]=useState<User|null>(null);const [authLoading,setAuthLoading]=useState(true);const [cloudReady,setCloudReady]=useState(false);const [authMode,setAuthMode]=useState<"signin"|"signup">("signin");const [authEmail,setAuthEmail]=useState("");const [authPassword,setAuthPassword]=useState("");const [authBusy,setAuthBusy]=useState(false);const [authMessage,setAuthMessage]=useState("");const [textScale,setTextScale]=useState(()=>localStorage.getItem("finpath-text-scale")||"normal");const [highContrast,setHighContrast]=useState(()=>localStorage.getItem("finpath-high-contrast")==="true");const [reduceMotion,setReduceMotion]=useState(()=>localStorage.getItem("finpath-reduce-motion")==="true");
+const [authUser,setAuthUser]=useState<User|null>(null);const [authLoading,setAuthLoading]=useState(true);const [cloudReady,setCloudReady]=useState(false);const [cloudUserId,setCloudUserId]=useState<string|null>(null);const [authMode,setAuthMode]=useState<"signin"|"signup">("signin");const [authEmail,setAuthEmail]=useState("");const [authPassword,setAuthPassword]=useState("");const [authBusy,setAuthBusy]=useState(false);const [authMessage,setAuthMessage]=useState("");const [textScale,setTextScale]=useState(()=>localStorage.getItem("finpath-text-scale")||"normal");const [highContrast,setHighContrast]=useState(()=>localStorage.getItem("finpath-high-contrast")==="true");const [reduceMotion,setReduceMotion]=useState(()=>localStorage.getItem("finpath-reduce-motion")==="true");
 useEffect(()=>{window.scrollTo({top:0,behavior:reduceMotion?"auto":"smooth"});},[active,reduceMotion]);useEffect(()=>{document.documentElement.dataset.textScale=textScale;document.documentElement.classList.toggle("finpath-high-contrast",highContrast);document.documentElement.classList.toggle("finpath-reduce-motion",reduceMotion);localStorage.setItem("finpath-text-scale",textScale);localStorage.setItem("finpath-high-contrast",String(highContrast));localStorage.setItem("finpath-reduce-motion",String(reduceMotion));},[textScale,highContrast,reduceMotion]);const [query,setQuery]=useState("");const [filter,setFilter]=useState("All courses");const [courseId,setCourseId]=useState("money");const [lessonIndex,setLessonIndex]=useState(0);const [lessonOpen,setLessonOpen]=useState(false);const [choice,setChoice]=useState<number|null>(null);const [feedback,setFeedback]=useState(false);const [resetConfirm,setResetConfirm]=useState(false);const [mobileMenu,setMobileMenu]=useState(false);const [writingAssignment,setWritingAssignment]=useState<number|null>(null);const [toast,setToast]=useState("");const [examCourseId,setExamCourseId]=useState("money");const [examAnswers,setExamAnswers]=useState<Record<string,number>>({});const [examSubmitted,setExamSubmitted]=useState(false);const [baselineCourseId,setBaselineCourseId]=useState<string|null>(null);const [baselineAnswers,setBaselineAnswers]=useState<Record<string,number>>({});const [baselineSubmitted,setBaselineSubmitted]=useState(false);
-useEffect(()=>{try{localStorage.setItem(key,JSON.stringify(saved));}catch{setToast("Progress could not be saved in this browser.");}},[saved]);
+useEffect(()=>{
+ if(authLoading)return;
+ if(authUser){
+  if(cloudUserId!==authUser.id)return;
+  try{localStorage.setItem(userStorageKey(authUser.id),JSON.stringify(saved));}catch{setToast("Progress could not be saved in this browser.");}
+ }else{
+  try{localStorage.setItem(key,JSON.stringify(saved));}catch{setToast("Progress could not be saved in this browser.");}
+ }
+},[saved,authUser?.id,authLoading,cloudUserId]);
 useEffect(()=>{
  if(!supabase){setAuthLoading(false);return;}
  let alive=true;
@@ -125,36 +136,27 @@ useEffect(()=>{
  return()=>{alive=false;subscription.unsubscribe();};
 },[]);
 useEffect(()=>{
- if(!supabase||!authUser){setCloudReady(false);return;}
- let cancelled=false;setCloudReady(false);
+ if(authLoading)return;
+ if(!supabase||!authUser){setCloudReady(false);setCloudUserId(null);return;}
+ let cancelled=false;setCloudReady(false);setCloudUserId(null);
  (async()=>{try{
   const {data,error}=await supabase!.from("user_progress").select("data").eq("user_id",authUser.id).maybeSingle();
   if(error)throw error;
   if(cancelled)return;
-  if(data?.data&&typeof data.data==="object"){
-   const local=loadSaved();const remote=data.data as Saved;
-   const merged:Saved={...local,...remote,
-    completed:[...new Set([...(local.completed||[]),...(remote.completed||[])])],
-    assignmentCompleted:[...new Set([...(local.assignmentCompleted||[]),...(remote.assignmentCompleted||[])])],
-    scores:{...local.scores,...remote.scores},answers:{...local.answers,...remote.answers},
-    assignmentResponses:{...local.assignmentResponses,...remote.assignmentResponses},
-    assignmentScores:{...local.assignmentScores,...remote.assignmentScores},
-    finalExamScores:{...local.finalExamScores,...remote.finalExamScores},
-    finalExamAttempts:{...local.finalExamAttempts,...remote.finalExamAttempts},
-    baselineAssessments:{...local.baselineAssessments,...remote.baselineAssessments},
-    lessonNotes:{...local.lessonNotes,...remote.lessonNotes},
-    startedAt:remote.startedAt||local.startedAt};
-   setSaved(merged);
-  }
-  if(!cancelled)setCloudReady(true);
- }catch{if(!cancelled){setAuthMessage("Cloud sync is not ready yet. Check the Supabase user_progress table and policies.");setCloudReady(true);}}})();
+  const accountKey=userStorageKey(authUser.id);
+  const accountLocal=loadSaved(accountKey);
+  const next=data?.data&&typeof data.data==="object"?normalizeSaved(data.data):accountLocal;
+  setSaved(next);
+  setCloudUserId(authUser.id);
+  setCloudReady(true);
+ }catch{if(!cancelled){setAuthMessage("Cloud sync could not load this account's progress. Your existing cloud data was not changed; check the Supabase user_progress table and policies.");setCloudReady(false);setCloudUserId(null);}}})();
  return()=>{cancelled=true;};
-},[authUser?.id]);
+},[authUser?.id,authLoading]);
 useEffect(()=>{
- if(!supabase||!authUser||!cloudReady)return;
+ if(!supabase||!authUser||!cloudReady||cloudUserId!==authUser.id)return;
  const timer=window.setTimeout(async()=>{const {error}=await supabase!.from("user_progress").upsert({user_id:authUser.id,data:saved,updated_at:new Date().toISOString()},{onConflict:"user_id"});if(error)setAuthMessage("Your progress is saved on this device, but cloud sync needs attention.");else setAuthMessage("Cloud sync is on. Your learning progress is backed up.");},900);
  return()=>window.clearTimeout(timer);
-},[saved,authUser?.id,cloudReady]);
+},[saved,authUser?.id,cloudReady,cloudUserId]);
 async function submitAuth(event:React.FormEvent<HTMLFormElement>){event.preventDefault();if(!supabase){setAuthMessage("Add the Supabase environment variables in Vercel to enable accounts.");return;}setAuthBusy(true);setAuthMessage("");try{const result=authMode==="signup"?await supabase.auth.signUp({email:authEmail.trim(),password:authPassword}):await supabase.auth.signInWithPassword({email:authEmail.trim(),password:authPassword});if(result.error)throw result.error;if(authMode==="signup"&&!result.data.session)setAuthMessage("Account created! Check your email to confirm it, then sign in.");else setAuthMessage(authMode==="signup"?"Account created. Your progress will sync to the cloud.":"Signed in. Loading your saved progress…");setAuthPassword("");}catch(error){setAuthMessage(error instanceof Error?error.message:"Could not complete sign-in. Please try again.");}finally{setAuthBusy(false);}}
 async function signInGoogle(){if(!supabase){setAuthMessage("Add the Supabase environment variables in Vercel to enable Google sign-in.");return;}setAuthBusy(true);setAuthMessage("");const {error}=await supabase.auth.signInWithOAuth({provider:"google",options:{redirectTo:"https://fin-path-edu.vercel.app"}});if(error){setAuthMessage(error.message);setAuthBusy(false);}}
 async function resetPassword(){if(!supabase||!authEmail.trim()){setAuthMessage("Enter your email address first, then choose reset password.");return;}setAuthBusy(true);const {error}=await supabase.auth.resetPasswordForEmail(authEmail.trim(),{redirectTo:"https://fin-path-edu.vercel.app"});setAuthMessage(error?"Could not send reset email: "+error.message:"Password reset email sent. Check your inbox.");setAuthBusy(false);}
