@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type CSSProperties, type ReactNode } from "react";
-import { Activity, ArrowRight, Award, BarChart3, BookOpen, Bookmark, BriefcaseBusiness, CalendarDays, Calculator, Check, CheckCircle2, Clock3, Compass, Download, FileText, GraduationCap, House, LayoutDashboard, Lightbulb, ListChecks, Menu, PiggyBank, RotateCcw, Search, Settings2, ShieldCheck, Sparkles, Target, TrendingUp, Wallet, X } from "lucide-react";
+import { Activity, ArrowRight, Award, BarChart3, BookOpen, Bookmark, BriefcaseBusiness, CalendarDays, Calculator, Check, CheckCircle2, Clock3, Compass, Download, FileText, GraduationCap, House, LayoutDashboard, Lightbulb, ListChecks, Menu, PiggyBank, RotateCcw, Search, Settings2, ShieldCheck, Sparkles, Target, TrendingUp, Wallet, X, Cloud, LogIn, LogOut } from "lucide-react";
+import type { User } from "@supabase/supabase-js";
+import { supabase } from "./lib/supabase";
 
 type Course = { id:string; title:string; pathway:string; description:string; lessons:number; hours:string; icon:typeof Wallet; tone:string; level:string };
 type Lesson = { id:string; title:string; minutes:number; objective:string; body:string[]; example:string; question:string; choices:string[]; answer:number; explanation:string };
@@ -90,9 +92,52 @@ const dailyAssignments:DailyAssignment[]=[
 ];
 
 export default function App(){
-const [saved,setSaved]=useState<Saved>(loadSaved);const [active,setActive]=useState("Dashboard");const [textScale,setTextScale]=useState(()=>localStorage.getItem("finpath-text-scale")||"normal");const [highContrast,setHighContrast]=useState(()=>localStorage.getItem("finpath-high-contrast")==="true");const [reduceMotion,setReduceMotion]=useState(()=>localStorage.getItem("finpath-reduce-motion")==="true");
+const [saved,setSaved]=useState<Saved>(loadSaved);const [active,setActive]=useState("Dashboard");
+const [authUser,setAuthUser]=useState<User|null>(null);const [authLoading,setAuthLoading]=useState(true);const [cloudReady,setCloudReady]=useState(false);const [authMode,setAuthMode]=useState<"signin"|"signup">("signin");const [authEmail,setAuthEmail]=useState("");const [authPassword,setAuthPassword]=useState("");const [authBusy,setAuthBusy]=useState(false);const [authMessage,setAuthMessage]=useState("");const [textScale,setTextScale]=useState(()=>localStorage.getItem("finpath-text-scale")||"normal");const [highContrast,setHighContrast]=useState(()=>localStorage.getItem("finpath-high-contrast")==="true");const [reduceMotion,setReduceMotion]=useState(()=>localStorage.getItem("finpath-reduce-motion")==="true");
 useEffect(()=>{window.scrollTo({top:0,behavior:reduceMotion?"auto":"smooth"});},[active,reduceMotion]);useEffect(()=>{document.documentElement.dataset.textScale=textScale;document.documentElement.classList.toggle("finpath-high-contrast",highContrast);document.documentElement.classList.toggle("finpath-reduce-motion",reduceMotion);localStorage.setItem("finpath-text-scale",textScale);localStorage.setItem("finpath-high-contrast",String(highContrast));localStorage.setItem("finpath-reduce-motion",String(reduceMotion));},[textScale,highContrast,reduceMotion]);const [query,setQuery]=useState("");const [filter,setFilter]=useState("All courses");const [courseId,setCourseId]=useState("money");const [lessonIndex,setLessonIndex]=useState(0);const [lessonOpen,setLessonOpen]=useState(false);const [choice,setChoice]=useState<number|null>(null);const [feedback,setFeedback]=useState(false);const [resetConfirm,setResetConfirm]=useState(false);const [mobileMenu,setMobileMenu]=useState(false);const [writingAssignment,setWritingAssignment]=useState<number|null>(null);const [toast,setToast]=useState("");const [examCourseId,setExamCourseId]=useState("money");const [examAnswers,setExamAnswers]=useState<Record<string,number>>({});const [examSubmitted,setExamSubmitted]=useState(false);const [baselineCourseId,setBaselineCourseId]=useState<string|null>(null);const [baselineAnswers,setBaselineAnswers]=useState<Record<string,number>>({});const [baselineSubmitted,setBaselineSubmitted]=useState(false);
 useEffect(()=>{try{localStorage.setItem(key,JSON.stringify(saved));}catch{setToast("Progress could not be saved in this browser.");}},[saved]);
+useEffect(()=>{
+ if(!supabase){setAuthLoading(false);return;}
+ let alive=true;
+ supabase.auth.getSession().then(({data})=>{if(alive){setAuthUser(data.session?.user??null);setAuthLoading(false);}});
+ const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>{setAuthUser(session?.user??null);setAuthLoading(false);});
+ return()=>{alive=false;subscription.unsubscribe();};
+},[]);
+useEffect(()=>{
+ if(!supabase||!authUser){setCloudReady(false);return;}
+ let cancelled=false;setCloudReady(false);
+ (async()=>{try{
+  const {data,error}=await supabase!.from("user_progress").select("data").eq("user_id",authUser.id).maybeSingle();
+  if(error)throw error;
+  if(cancelled)return;
+  if(data?.data&&typeof data.data==="object"){
+   const local=loadSaved();const remote=data.data as Saved;
+   const merged:Saved={...local,...remote,
+    completed:[...new Set([...(local.completed||[]),...(remote.completed||[])])],
+    assignmentCompleted:[...new Set([...(local.assignmentCompleted||[]),...(remote.assignmentCompleted||[])])],
+    scores:{...local.scores,...remote.scores},answers:{...local.answers,...remote.answers},
+    assignmentResponses:{...local.assignmentResponses,...remote.assignmentResponses},
+    assignmentScores:{...local.assignmentScores,...remote.assignmentScores},
+    finalExamScores:{...local.finalExamScores,...remote.finalExamScores},
+    finalExamAttempts:{...local.finalExamAttempts,...remote.finalExamAttempts},
+    baselineAssessments:{...local.baselineAssessments,...remote.baselineAssessments},
+    lessonNotes:{...local.lessonNotes,...remote.lessonNotes},
+    startedAt:remote.startedAt||local.startedAt};
+   setSaved(merged);
+  }
+  if(!cancelled)setCloudReady(true);
+ }catch{if(!cancelled){setAuthMessage("Cloud sync is not ready yet. Check the Supabase user_progress table and policies.");setCloudReady(true);}}})();
+ return()=>{cancelled=true;};
+},[authUser?.id]);
+useEffect(()=>{
+ if(!supabase||!authUser||!cloudReady)return;
+ const timer=window.setTimeout(async()=>{const {error}=await supabase!.from("user_progress").upsert({user_id:authUser.id,data:saved,updated_at:new Date().toISOString()},{onConflict:"user_id"});if(error)setAuthMessage("Your progress is saved on this device, but cloud sync needs attention.");else setAuthMessage("Cloud sync is on. Your learning progress is backed up.");},900);
+ return()=>window.clearTimeout(timer);
+},[saved,authUser?.id,cloudReady]);
+async function submitAuth(event:React.FormEvent<HTMLFormElement>){event.preventDefault();if(!supabase){setAuthMessage("Add the Supabase environment variables in Vercel to enable accounts.");return;}setAuthBusy(true);setAuthMessage("");try{const result=authMode==="signup"?await supabase.auth.signUp({email:authEmail.trim(),password:authPassword}):await supabase.auth.signInWithPassword({email:authEmail.trim(),password:authPassword});if(result.error)throw result.error;if(authMode==="signup"&&!result.data.session)setAuthMessage("Account created! Check your email to confirm it, then sign in.");else setAuthMessage(authMode==="signup"?"Account created. Your progress will sync to the cloud.":"Signed in. Loading your saved progress…");setAuthPassword("");}catch(error){setAuthMessage(error instanceof Error?error.message:"Could not complete sign-in. Please try again.");}finally{setAuthBusy(false);}}
+async function signInGoogle(){if(!supabase){setAuthMessage("Add the Supabase environment variables in Vercel to enable Google sign-in.");return;}setAuthBusy(true);setAuthMessage("");const {error}=await supabase.auth.signInWithOAuth({provider:"google",options:{redirectTo:window.location.origin}});if(error){setAuthMessage(error.message);setAuthBusy(false);}}
+async function resetPassword(){if(!supabase||!authEmail.trim()){setAuthMessage("Enter your email address first, then choose reset password.");return;}setAuthBusy(true);const {error}=await supabase.auth.resetPasswordForEmail(authEmail.trim(),{redirectTo:window.location.origin});setAuthMessage(error?"Could not send reset email: "+error.message:"Password reset email sent. Check your inbox.");setAuthBusy(false);}
+async function signOut(){if(supabase)await supabase.auth.signOut();setAuthUser(null);setCloudReady(false);setAuthMessage("Signed out. Your progress remains saved on this device.");}
 useEffect(()=>{if(!toast)return;const t=window.setTimeout(()=>setToast(""),3000);return()=>window.clearTimeout(t);},[toast]);
 const selected=courses.find(c=>c.id===courseId)||courses[0];const courseLessons=lessons[courseId]||lessons.money;const lesson=courseLessons[Math.min(lessonIndex,courseLessons.length-1)];const done=(id:string)=>saved.completed.includes(id);const totalDone=saved.completed.length;const totalLessons=courses.reduce((n,c)=>n+c.lessons,0);const progress=Math.round(totalDone/totalLessons*100);
 const shown=useMemo(()=>courses.filter(c=>(c.title+" "+c.pathway+" "+c.description).toLowerCase().includes(query.toLowerCase())&&(filter==="All courses"||c.pathway===filter)),[query,filter]);
