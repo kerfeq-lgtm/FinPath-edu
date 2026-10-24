@@ -50,3 +50,24 @@
 .calculator-example-button:hover{background:#eaf3fb}
 @media(max-width:760px){.native-calculator-top{flex-direction:column}.graph-view-controls{justify-content:flex-start}.graph-view-controls .outline-button{font-size:9px}.graph-equation-form>div{align-items:stretch;flex-direction:column}.graph-equation-form .primary-button{justify-content:center}.graph-expressions{gap:6px}.graph-expression{max-width:100%}.graph-canvas-wrap canvas{height:360px!important}}
 @media(max-width:480px){.native-calculator-top{padding:15px}.graph-equation-form{padding:13px}.graph-expressions{padding:10px}.graph-expression-toggle code{font-size:9px}.graph-function-help{padding:11px}.graph-canvas-wrap canvas{height:320px!important}}
+
+
+/* Financial Lab */
+.lab-notice{display:flex;align-items:flex-start;gap:11px;padding:14px 16px;margin:0 0 16px;border:1px solid #dcece7;border-radius:10px;background:#f0f8f5;color:#4d8e80}
+.lab-notice svg{flex-shrink:0;margin-top:2px}.lab-notice p{margin:0;color:#6f8982;font-size:11px;line-height:1.7}.lab-notice strong{color:#397b6e}
+.financial-lab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.lab-card{min-width:0;background:#fff;border:1px solid #e2eaf0;border-radius:12px;padding:18px;display:flex;flex-direction:column}
+.lab-card-head{display:flex;align-items:center;gap:11px}.lab-card-head .resource-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:11px;flex-shrink:0}
+.lab-card-head h3{font:800 15px Manrope,sans-serif;color:#1c3a52;margin:4px 0 0}
+.lab-description{font-size:10.5px;line-height:1.7;color:#83929e;min-height:35px;margin:12px 0}
+.lab-fields{display:grid;grid-template-columns:1fr;gap:10px}.lab-fields.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lab-fields label{display:grid;gap:6px;color:#657b8b;font-size:10px;font-weight:700;min-width:0}
+.lab-fields input{width:100%;min-width:0;border:1px solid #dfe7ed;border-radius:7px;padding:10px 11px;background:#fbfcfd;color:#29465c;font-size:12px}
+.lab-fields input:focus{border-color:#83bdb7;outline:3px solid #83bdb722}
+.lab-result{display:grid;gap:6px;margin-top:15px;padding:13px 14px;border:1px solid #e1efea;border-radius:9px;background:#f2f9f6}
+.lab-result>span{font-size:9px;letter-spacing:.5px;color:#6d8a80;font-weight:700}
+.lab-result strong{font:800 23px Manrope,sans-serif;letter-spacing:-.7px;color:#287e6d;overflow-wrap:anywhere}
+.lab-result small{font-size:9.5px;line-height:1.65;color:#7b9289}
+.lab-result.negative{background:#fff5f4;border-color:#f2dcd9}.lab-result.negative strong{color:#b45252}.lab-result.negative>span,.lab-result.negative small{color:#a57572}
+@media(max-width:760px){.financial-lab-grid{grid-template-columns:1fr}.lab-card{padding:16px}}
+@media(max-width:400px){.lab-fields.two{grid-template-columns:1fr}}
