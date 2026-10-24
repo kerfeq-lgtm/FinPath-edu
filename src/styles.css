@@ -277,3 +277,11 @@ html[data-text-scale="larger"] .app-shell p,html[data-text-scale="larger"] .app-
 .finpath-reduce-motion *, .finpath-reduce-motion *::before, .finpath-reduce-motion *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 @media(max-width:760px){.country-cost-grid{grid-template-columns:1fr}.progress-report-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.accessibility-settings{padding:15px}}
 @media(max-width:440px){.progress-report-grid{grid-template-columns:1fr}.accessibility-settings .setting-row{align-items:flex-start;gap:12px;flex-direction:column}.accessibility-settings .setting-row>*{max-width:100%}}
+
+/* Keep the sidebar navigation independently scrollable so Settings remains reachable on short screens. */
+.sidebar{height:100vh;height:100dvh;overflow:hidden;}
+.sidebar nav{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;align-content:start;scrollbar-width:thin;scrollbar-color:#45657e #0c233b;padding-right:3px;}
+.sidebar nav::-webkit-scrollbar{width:6px;}
+.sidebar nav::-webkit-scrollbar-track{background:#0c233b;border-radius:6px;}
+.sidebar nav::-webkit-scrollbar-thumb{background:#45657e;border-radius:6px;}
+.sidebar-bottom{flex:0 0 auto;}
