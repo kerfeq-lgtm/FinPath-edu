@@ -234,3 +234,46 @@
 .currency-converter-fields input:focus,.currency-converter-fields select:focus{outline:3px solid rgba(122,185,176,.18);border-color:#7ab9b0}
 .currency-lab-card .lab-result{overflow-wrap:anywhere}
 @media(max-width:520px){.currency-converter-fields{grid-template-columns:1fr}}
+
+/* International planning modules, learning report, and accessibility */
+.currency-converter-fields select,.lab-fields select,.setting-row select{font:inherit}
+.forecast-table-wrap{overflow-x:auto;margin:16px 0;border:1px solid #e2e9ef;border-radius:12px}
+.forecast-table{width:100%;border-collapse:collapse;min-width:400px;background:#fff}
+.forecast-table th,.forecast-table td{padding:11px 13px;text-align:right;border-bottom:1px solid #e8edf1;font-size:12px}
+.forecast-table th{background:#f4f8fa;color:#5e7180;font-size:10px;text-transform:uppercase;letter-spacing:.6px}
+.forecast-table th:first-child,.forecast-table td:first-child{text-align:left}
+.forecast-table tbody tr:last-child td{border-bottom:0}
+.country-cost-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+.country-cost-card{min-width:0;padding:17px;border:1px solid #e1e9ef;border-radius:14px;background:#fbfcfd}
+.country-cost-card h4{font:700 13px Manrope,sans-serif;color:#607688;margin:9px 0}
+.country-cost-card>strong{display:block;font:800 21px Manrope,sans-serif;color:#183b54;margin-bottom:13px}
+.country-cost-card dl{margin:0 0 12px}
+.country-cost-card dl>div{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #e8edf1;font-size:12px}
+.country-cost-card dt{color:#647989}.country-cost-card dd{margin:0;color:#25445a;font-weight:700}
+.country-cost-card>small{font-size:10px;line-height:1.5;color:#7a8b98}
+.accessibility-settings{padding:20px;margin-bottom:18px;border:1px solid #e0e8ee;border-radius:16px;background:#f9fbfc}
+.accessibility-settings-heading{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:8px}
+.accessibility-settings-heading h3{font:800 19px Manrope,sans-serif;color:#1b3a52;margin:7px 0}
+.accessibility-settings-heading p{font-size:12px;color:#758593;line-height:1.6;margin:0}
+.accessibility-icon{display:grid;place-items:center;width:42px;height:42px;flex-shrink:0;border-radius:12px;background:#eaf4fa;color:#245c7b}
+.accessibility-settings .setting-row{padding:14px 0;border-top:1px solid #e5ebef}
+.accessibility-settings .setting-row select{min-width:130px;padding:10px;border:1px solid #d6e0e7;border-radius:9px;background:white;color:#243e52}
+.progress-report-details{margin:25px 0;padding:22px;border:1px solid #e0e8ee;border-radius:17px;background:#fff}
+.progress-report-heading h3{font:800 20px Manrope,sans-serif;color:#193a53;margin:7px 0}
+.progress-report-heading p{font-size:12px;color:#758593;margin:0 0 17px}
+.progress-report-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.progress-report-grid article{display:flex;flex-direction:column;gap:7px;padding:15px;border-radius:12px;background:#f6f9fb;border:1px solid #e8edf1}
+.progress-report-grid article>span{font-size:11px;color:#697e8e}
+.progress-report-grid article>strong{font:800 23px Manrope,sans-serif;color:#1c435d}
+.progress-report-grid article>small{font-size:10px;line-height:1.5;color:#7c8b97}
+html[data-text-scale="large"] .app-shell{font-size:1.08rem}
+html[data-text-scale="large"] .app-shell p,html[data-text-scale="large"] .app-shell label,html[data-text-scale="large"] .app-shell input,html[data-text-scale="large"] .app-shell textarea{font-size:1.08em}
+html[data-text-scale="larger"] .app-shell{font-size:1.16rem}
+html[data-text-scale="larger"] .app-shell p,html[data-text-scale="larger"] .app-shell label,html[data-text-scale="larger"] .app-shell input,html[data-text-scale="larger"] .app-shell textarea{font-size:1.16em}
+.finpath-high-contrast .app-shell{color:#101820}
+.finpath-high-contrast .app-shell p,.finpath-high-contrast .app-shell small,.finpath-high-contrast .app-shell .lab-description{color:#263b4a}
+.finpath-high-contrast .app-shell button,.finpath-high-contrast .app-shell input,.finpath-high-contrast .app-shell textarea,.finpath-high-contrast .app-shell select,.finpath-high-contrast .app-shell article,.finpath-high-contrast .app-shell .panel{border-color:#526779}
+.finpath-high-contrast .app-shell :focus-visible{outline:3px solid #005fcc;outline-offset:3px}
+.finpath-reduce-motion *, .finpath-reduce-motion *::before, .finpath-reduce-motion *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+@media(max-width:760px){.country-cost-grid{grid-template-columns:1fr}.progress-report-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.accessibility-settings{padding:15px}}
+@media(max-width:440px){.progress-report-grid{grid-template-columns:1fr}.accessibility-settings .setting-row{align-items:flex-start;gap:12px;flex-direction:column}.accessibility-settings .setting-row>*{max-width:100%}}
