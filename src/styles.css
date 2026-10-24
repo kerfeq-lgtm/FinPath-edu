@@ -98,3 +98,20 @@
 .lesson-sequence .outline-button{padding:8px 10px;font-size:10px}
 .lesson-sequence .outline-button:disabled{opacity:.4;cursor:not-allowed}
 @media(max-width:480px){.lesson-sequence{padding:10px 13px;gap:6px}.lesson-sequence .outline-button{font-size:9px;padding:8px 7px}.lesson-sequence>span{font-size:9px}}
+
+
+/* Course mastery */
+.mastery-intro{font-size:10px;line-height:1.7;color:#81919d;margin:-6px 0 14px;max-width:760px}
+.mastery-courses{padding:20px;background:#fff;border:1px solid #e2eaf0;border-radius:12px}
+.mastery-courses>h3{font:800 16px Manrope,sans-serif;color:#234158;margin:0 0 15px}
+.mastery-course{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-top:1px solid #edf1f4}
+.mastery-course:first-of-type{border-top:0}
+.mastery-course-main{flex:1;min-width:0}
+.mastery-course-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:1px 0 9px}
+.mastery-course-title>strong{font-size:11px;color:#35536a}
+.mastery-badge{flex-shrink:0;padding:4px 7px;border-radius:5px;background:#f1f5f7;color:#7b8c98;font-size:8px;font-weight:800}
+.mastery-badge.review{background:#fff2e2;color:#a16b2c}
+.mastery-badge.mastered{background:#e8f6ef;color:#34846d}
+.mastery-meta{display:flex;justify-content:space-between;gap:8px;margin-top:7px;color:#81919d;font-size:9px}
+.mastery-review-note{display:block;margin-top:7px;color:#a16b2c;font-size:9px}
+@media(max-width:520px){.mastery-courses{padding:14px}.mastery-course{gap:8px}.mastery-course-title{align-items:flex-start;flex-direction:column;gap:5px}.mastery-meta{flex-direction:column;gap:4px}}
