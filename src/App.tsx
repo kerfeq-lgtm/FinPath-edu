@@ -99,8 +99,29 @@ useEffect(()=>{try{localStorage.setItem(key,JSON.stringify(saved));}catch{setToa
 useEffect(()=>{
  if(!supabase){setAuthLoading(false);return;}
  let alive=true;
- supabase.auth.getSession().then(({data})=>{if(alive){setAuthUser(data.session?.user??null);setAuthLoading(false);}});
- const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>{setAuthUser(session?.user??null);setAuthLoading(false);});
+ const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>{
+  if(alive){setAuthUser(session?.user??null);setAuthLoading(false);}
+ });
+ (async()=>{
+  try{
+   const url=new URL(window.location.href);
+   const code=url.searchParams.get("code");
+   if(code){
+    const {error}=await supabase!.auth.exchangeCodeForSession(code);
+    if(error)throw error;
+    url.searchParams.delete("code");
+    window.history.replaceState({},document.title,url.pathname+url.search+url.hash);
+   }
+   const {data,error}=await supabase!.auth.getSession();
+   if(error)throw error;
+   if(alive){setAuthUser(data.session?.user??null);setAuthLoading(false);}
+  }catch(error){
+   if(alive){
+    setAuthMessage(error instanceof Error?("Sign-in could not be completed: "+error.message):"Sign-in could not be completed. Please try Google sign-in again.");
+    setAuthLoading(false);
+   }
+  }
+ })();
  return()=>{alive=false;subscription.unsubscribe();};
 },[]);
 useEffect(()=>{
