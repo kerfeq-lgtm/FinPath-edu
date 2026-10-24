@@ -182,3 +182,33 @@
 .certificate-history-row .outline-button{font-size:10px;flex-shrink:0}
 @media(max-width:760px){.dashboard-focus{align-items:flex-start;flex-direction:column}.dashboard-focus-actions{max-width:none}.completion-check-row{flex-wrap:wrap}.completion-check-main{min-width:65%}}
 @media(max-width:480px){.certificate-history-row{align-items:flex-start;flex-direction:column}.certificate-history-row .outline-button{width:100%}}
+
+/* Dashboard planning and learning calendar */
+.dashboard-insights{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:22px 0 25px}
+.insight-card{display:flex;align-items:flex-start;gap:15px;padding:22px;border:1px solid #e1e9ef;border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(17,46,74,.035)}
+.insight-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:13px;background:#eaf4fa;color:#235579}
+.insight-card .kicker{font-size:10px;letter-spacing:1.3px;font-weight:800;color:#7c8d9b}
+.insight-card h3{font:800 17px Manrope,sans-serif;letter-spacing:-.35px;margin:8px 0 7px;color:#17344e}
+.insight-card p{font-size:12px;line-height:1.65;color:#738494;margin:0 0 10px}
+.text-action{border:0;background:transparent;padding:0;color:#176c75;font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:7px}
+.text-action:hover{text-decoration:underline}
+.calendar-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:8px 0 22px}
+.calendar-summary>div{display:grid;grid-template-columns:28px 1fr;align-items:center;column-gap:8px;padding:17px;border:1px solid #e4ebf0;border-radius:14px;background:#f9fbfd}
+.calendar-summary svg{grid-row:span 2;color:#287783}
+.calendar-summary strong{font:800 18px Manrope,sans-serif;color:#183850}
+.calendar-summary span{font-size:11px;color:#7b8a97;margin-top:3px}
+.learning-calendar-list{display:grid;gap:11px;margin:18px 0}
+.calendar-assignment{display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;gap:17px;padding:16px;border:1px solid #e4eaf0;border-radius:14px;background:#fff}
+.calendar-assignment.calendar-today{border-color:#82c8bd;background:#f4fbf9}
+.calendar-assignment.calendar-done{background:#f8fbfa}
+.calendar-date{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:76px;border-radius:11px;background:#edf4f8;color:#31556d;padding:8px}
+.calendar-date strong{font-size:11px;text-transform:uppercase;letter-spacing:.7px}
+.calendar-date span{font:800 27px Manrope,sans-serif;line-height:1.25}
+.calendar-date small{font-size:9px;font-weight:800;letter-spacing:.8px;margin-top:3px}
+.calendar-assignment-copy .category{font-size:9px;letter-spacing:.6px}
+.calendar-assignment-copy h3{font:800 15px Manrope,sans-serif;margin:6px 0;color:#1b3850}
+.calendar-assignment-copy p{font-size:12px;line-height:1.55;color:#758492;margin:0 0 7px}
+.calendar-assignment-copy>small{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#758492}
+.calendar-assignment-status{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.calendar-assignment-status .outline-button{white-space:nowrap}
+@media(max-width:760px){.dashboard-insights{grid-template-columns:1fr}.calendar-summary{grid-template-columns:1fr}.calendar-assignment{grid-template-columns:58px minmax(0,1fr);gap:12px}.calendar-date{grid-row:span 2;min-height:70px}.calendar-assignment-status{grid-column:2;align-items:flex-start;flex-direction:row;flex-wrap:wrap;justify-content:flex-start}.insight-card{padding:17px}}
