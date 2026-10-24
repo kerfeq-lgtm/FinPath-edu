@@ -71,3 +71,23 @@
 .lab-result.negative{background:#fff5f4;border-color:#f2dcd9}.lab-result.negative strong{color:#b45252}.lab-result.negative>span,.lab-result.negative small{color:#a57572}
 @media(max-width:760px){.financial-lab-grid{grid-template-columns:1fr}.lab-card{padding:16px}}
 @media(max-width:400px){.lab-fields.two{grid-template-columns:1fr}}
+
+
+/* Expanded lesson assessment system */
+.assessment-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.assessment-overview>div{display:grid;gap:5px;padding:15px 17px;border:1px solid #e1e9ef;border-radius:10px;background:#fff}
+.assessment-overview strong{font:800 24px Manrope,sans-serif;letter-spacing:-.6px;color:#234761}
+.assessment-overview span{font-size:10px;color:#80919e}
+.assessment-lesson-list{display:grid;gap:8px;margin-top:12px}
+.assessment-lesson{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border:1px solid #e7edf1;border-radius:8px;background:#fbfcfd}
+.assessment-lesson>div{display:grid;gap:4px;min-width:0}
+.assessment-lesson strong{font-size:10px;line-height:1.5;color:#35536a}
+.assessment-lesson small{font-size:9px;color:#7d8e99}
+.assessment-lesson .outline-button{flex-shrink:0;padding:7px 9px;font-size:9px}
+.review-mistakes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:18px;padding:18px;border:1px solid #f0e2cc;border-radius:11px;background:#fffaf2}
+.review-mistakes h3{margin:5px 0;font:800 16px Manrope,sans-serif;color:#4b5360}
+.review-mistakes p{margin:6px 0 0;font-size:10px;line-height:1.7;color:#8b8579}
+.review-mistake-list{display:grid;gap:7px}
+.review-mistake-list button{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 11px;border:1px solid #f0e5d6;border-radius:7px;background:#fff;color:#765f42;text-align:left;font-size:10px}
+.review-mistake-list button:hover{background:#fff3df}
+@media(max-width:760px){.assessment-overview{grid-template-columns:1fr}.review-mistakes{grid-template-columns:1fr}.assessment-lesson{align-items:flex-start}}
