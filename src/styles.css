@@ -115,3 +115,39 @@
 .mastery-meta{display:flex;justify-content:space-between;gap:8px;margin-top:7px;color:#81919d;font-size:9px}
 .mastery-review-note{display:block;margin-top:7px;color:#a16b2c;font-size:9px}
 @media(max-width:520px){.mastery-courses{padding:14px}.mastery-course{gap:8px}.mastery-course-title{align-items:flex-start;flex-direction:column;gap:5px}.mastery-meta{flex-direction:column;gap:4px}}
+
+
+/* Final exams and printable completion certificates */
+.exam-course-picker{display:grid;gap:8px;margin-bottom:18px;padding:16px;background:#f5f8fb;border:1px solid #e2eaf0;border-radius:10px}
+.exam-course-picker label{font-size:11px;font-weight:800;color:#35536a}
+.exam-course-picker select{width:100%;max-width:480px;padding:11px;border:1px solid #d9e3ea;border-radius:7px;background:#fff;color:#29485d;font:inherit}
+.exam-course-picker p{margin:2px 0 0;color:#7b8c98;font-size:10px}
+.final-exam-questions{display:grid;gap:14px}
+.final-exam-question{padding:17px;background:#fff;border:1px solid #e2eaf0;border-radius:10px}
+.final-exam-question h3{margin:8px 0 13px;color:#28465b;font:800 14px Manrope,sans-serif;line-height:1.5}
+.final-exam-question .choice-list{display:grid;gap:7px}
+.exam-explanation{margin-top:11px;padding:10px 12px;border-radius:7px;background:#f0f7f4;color:#3d7565;font-size:11px;line-height:1.6}
+.exam-explanation p{margin:4px 0 0}
+.exam-submit{margin-top:16px}
+.exam-result{margin-top:18px;padding:18px;border:1px solid #dce8ee;border-radius:10px;background:#f5f8fb;color:#29485d}
+.exam-result strong{font:800 20px Manrope,sans-serif}
+.exam-result p{margin:6px 0;font-size:12px}
+.exam-result small{color:#7b8c98;font-size:10px}
+.exam-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.certificate-note{font-size:11px;color:#946b32;margin-top:10px}
+.print-certificate{margin-top:18px;padding:16px;border:1px dashed #9bb3c1;border-radius:10px;background:#fff}
+.certificate-inner{padding:34px 24px;text-align:center;border:3px double #9bb3c1;color:#29485d}
+.certificate-inner>svg{color:#648a9f;margin-bottom:10px}
+.certificate-inner h2{font:800 26px Manrope,sans-serif;margin:14px 0}
+.certificate-inner h3{font:800 20px Manrope,sans-serif;margin:12px 0;color:#357b70}
+.certificate-inner p{font-size:12px;line-height:1.7}
+.certificate-inner>strong{display:block;margin:14px 0}
+.certificate-inner small{color:#7b8c98;font-size:10px}
+@media(max-width:520px){.final-exam-question{padding:13px}.certificate-inner{padding:22px 12px}.certificate-inner h2{font-size:21px}.exam-actions>*{width:100%}}
+@media print{
+  @page{size:landscape;margin:12mm}
+  body *{visibility:hidden!important}
+  .print-certificate,.print-certificate *{visibility:visible!important}
+  .print-certificate{display:block!important;position:fixed;inset:0;margin:0;padding:0;border:0;background:#fff}
+  .certificate-inner{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px;border:5px double #29485d}
+}
