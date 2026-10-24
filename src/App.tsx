@@ -138,7 +138,7 @@ useEffect(()=>{
 useEffect(()=>{
  if(authLoading)return;
  if(!supabase||!authUser){setCloudReady(false);setCloudUserId(null);return;}
- let cancelled=false;setCloudReady(false);setCloudUserId(null);
+ let cancelled=false;setCloudReady(false);setCloudUserId(null);setSaved(emptySaved());
  (async()=>{try{
   const {data,error}=await supabase!.from("user_progress").select("data").eq("user_id",authUser.id).maybeSingle();
   if(error)throw error;
