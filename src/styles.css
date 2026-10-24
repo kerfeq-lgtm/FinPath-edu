@@ -212,3 +212,17 @@
 .calendar-assignment-status{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
 .calendar-assignment-status .outline-button{white-space:nowrap}
 @media(max-width:760px){.dashboard-insights{grid-template-columns:1fr}.calendar-summary{grid-template-columns:1fr}.calendar-assignment{grid-template-columns:58px minmax(0,1fr);gap:12px}.calendar-date{grid-row:span 2;min-height:70px}.calendar-assignment-status{grid-column:2;align-items:flex-start;flex-direction:row;flex-wrap:wrap;justify-content:flex-start}.insight-card{padding:17px}}
+
+/* Course note workspace */
+.lesson-notes-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:30px 0 15px;padding-top:24px;border-top:1px solid #e5ebf0}
+.lesson-notes-heading h3{font:800 21px Manrope,sans-serif;letter-spacing:-.5px;color:#193a53;margin:7px 0}
+.lesson-notes-heading p{font-size:12px;color:#7a8997;margin:0;line-height:1.6}
+.notes-saved-label{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:11px;font-weight:700;color:#287a6f}
+.lesson-notes-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:8px}
+.lesson-note-card{display:flex;flex-direction:column;gap:10px;padding:17px;border:1px solid #e3eaf0;border-radius:14px;background:#fbfcfd}
+.lesson-note-card label{display:flex;flex-direction:column;gap:6px;cursor:pointer}
+.lesson-note-card label strong{font:800 14px Manrope,sans-serif;color:#1b3850}
+.lesson-note-card textarea{width:100%;min-height:110px;resize:vertical;border:1px solid #dce5eb;border-radius:10px;background:#fff;padding:11px 12px;color:#243e52;font-size:12px;line-height:1.65}
+.lesson-note-card textarea:focus{border-color:#7ab9b0;outline:3px solid rgba(122,185,176,.18)}
+.lesson-note-card>small{font-size:10px;color:#82909c;text-align:right}
+@media(max-width:760px){.lesson-notes-grid{grid-template-columns:1fr}.lesson-notes-heading{align-items:flex-start;flex-direction:column}.notes-saved-label{white-space:normal}}
